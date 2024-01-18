@@ -1,0 +1,83 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.0-SNAPSHOT'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id 'org.hibernate.orm' version '6.4.1.Final'
+	id 'org.graalvm.buildtools.native' version '0.9.28'
+	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+	id 'com.diffplug.spotless' version '6.24.0'
+}
+
+group = 'io.github.martinwitt'
+version = '0.0.1-SNAPSHOT'
+
+sourceCompatibility = 21
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+ext.snippetsDir = file("build/generated-snippets")
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-webtestclient'
+	implementation 'com.github.docker-java:docker-java:3.3.4'
+	implementation 'com.github.docker-java:docker-java-transport-httpclient5:3.3.4'
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	implementation 'com.github.docker-java:docker-java:3.3.4'
+	implementation 'com.github.docker-java:docker-java-transport-zerodep:3.3.4'
+	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+}
+
+test {
+	outputs.dir snippetsDir
+	useJUnitPlatform()
+}
+
+assemble {
+	inputs.dir snippetsDir
+	dependsOn test
+}
+
+configurations {
+	compileOnly {
+		extendsFrom configurations.annotationProcessor
+	}
+}
+
+spotless {
+	java {
+		removeUnusedImports()
+		palantirJavaFormat()
+		formatAnnotations()
+	}
+}
+
+task processFrontendResources(type: Copy) {
+	def frontendModulePath = project(":frontend").projectDir
+	println "Frontend module path: $frontendModulePath"
+	def frontendBuildDir = file("${frontendModulePath}/dist")
+	def frontendResourcesDir = file("${project.buildDir}/resources/main/public")
+
+	group = "Frontend"
+	description = "Process frontend resources"
+	dependsOn(":frontend:assembleFrontend")
+
+	from(frontendBuildDir)
+	into(frontendResourcesDir)
+}
+
+processResources {
+	dependsOn processFrontendResources
+}
