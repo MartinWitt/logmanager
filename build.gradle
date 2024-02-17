@@ -13,7 +13,10 @@ group = 'io.github.martinwitt'
 version '0.0.1-SNAPSHOT'
 // x-release-please-end
 
-sourceCompatibility = 21
+java {
+	sourceCompatibility  = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+}
 
 repositories {
 	mavenCentral()
@@ -59,6 +62,7 @@ configurations {
 
 spotless {
 	java {
+		target 'src/*/java/**/*.java'
 		removeUnusedImports()
 		palantirJavaFormat()
 		formatAnnotations()
