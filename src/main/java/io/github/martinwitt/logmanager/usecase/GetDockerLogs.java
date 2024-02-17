@@ -8,9 +8,9 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.transport.DockerHttpClient;
 import com.github.dockerjava.zerodep.ZerodepDockerHttpClient;
+import io.github.martinwitt.logmanager.domain.DockerLogs;
+import io.github.martinwitt.logmanager.domain.DockerService;
 import java.net.URI;
-
-import io.github.martinwitt.logmanager.domain.*;
 import org.springframework.stereotype.Service;
 
 @Service
