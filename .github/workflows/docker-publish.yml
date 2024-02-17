@@ -48,6 +48,9 @@ jobs:
         uses: sigstore/cosign-installer@e1523de7571e31dbe865fd2e80c5c7c23ae71eb4
         with:
           cosign-release: 'v1.13.1'
+      - name: Get version
+        id: version
+        run: echo "::set-output name=version::$(gradle -q printVersion)"
       # Build Quarkus
       - name: Build
         run: gradle bootBuildImage
@@ -77,7 +80,7 @@ jobs:
           docker image list
       - name: Push image
         run: |
-          echo ${{ steps.meta.outputs.tags }} | tr "," "\n" | while read -r tag; do
-            docker tag logmanager:$(gradle -q printVersion) $tag
-            docker push $tag
-          done
+            echo ${{ steps.meta.outputs.tags }} | tr "," "\n" | while read -r tag; do
+              docker tag logmanager:${{ steps.version.outputs.version }} $tag
+              docker push $tag
+            done
