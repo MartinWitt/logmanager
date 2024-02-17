@@ -68,6 +68,8 @@ jobs:
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: debug
+        run: docker image list
       - name: push image
         if: ${{ github.event_name != 'pull_request' }}
         run: |
