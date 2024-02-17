@@ -70,4 +70,4 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       - name: push image
         run: |
-          docker push ghcr.io/martinwitt/logmanager:latest
+          docker push martinwitt/logmanager:latest
