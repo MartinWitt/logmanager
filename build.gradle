@@ -86,3 +86,8 @@ tasks.register('processFrontendResources', Copy) {
 processResources {
 	dependsOn processFrontendResources
 }
+tasks.register('printVersion') {
+	doLast {
+		println version
+	}
+}

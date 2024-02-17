@@ -41,7 +41,10 @@ jobs:
         with:
           distribution: 'oracle'
           java-version: '21'
-      # Install the cosign tool except on PR
+      - name: Get version
+        id: version
+        run: echo "VERSION=$(./gradlew -q printVersion)" >> $GITHUB_ENV
+        # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
         if: github.event_name != 'pull_request'
@@ -67,18 +70,18 @@ jobs:
         id: meta
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81
         with:
-          images: |
-            ${{github.repository}}
+          images: ${{github.repository}}
           tags: |
             type=semver,pattern={{major}}.{{minor}}.{{patch}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
       - name: debug
-        run: docker image list
-      - name: push image
         run: |
-          for tag in $(jq -r '.tags[]' <<< "$DOCKER_METADATA_OUTPUT_JSON"); do
-              echo "Pushing $tag"
-              docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$tag
+          docker image list
+      - name: Push image
+        if: ${{ github.event_name != 'pull_request' }}
+        run: |
+          echo ${{ steps.meta.outputs.tags }} | tr "," "\n" | while read -r tag; do
+            docker tag logmanager:${{ env.VERSION}} $tag
+            docker push $tag
           done
-          docker push ghcr.io/${{ github.repository }}
