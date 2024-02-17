@@ -1,15 +1,17 @@
 package io.github.martinwitt.logmanager;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.*;
-
-import io.github.martinwitt.logmanager.domain.*;
-import io.github.martinwitt.logmanager.usecase.*;
-import org.junit.jupiter.api.*;
+import io.github.martinwitt.logmanager.domain.DockerLogs;
+import io.github.martinwitt.logmanager.domain.DockerService;
+import io.github.martinwitt.logmanager.usecase.GetDockerLogs;
+import io.github.martinwitt.logmanager.usecase.GetDockerServices;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

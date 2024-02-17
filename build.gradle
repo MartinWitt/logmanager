@@ -2,7 +2,6 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.0-SNAPSHOT'
 	id 'io.spring.dependency-management' version '1.1.4'
-	id 'org.hibernate.orm' version '6.4.1.Final'
 	id 'org.graalvm.buildtools.native' version '0.9.28'
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 	id 'com.diffplug.spotless' version '6.24.0'
@@ -14,7 +13,10 @@ group = 'io.github.martinwitt'
 version '0.0.1-SNAPSHOT'
 // x-release-please-end
 
-sourceCompatibility = 21
+java {
+	sourceCompatibility  = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+}
 
 repositories {
 	mavenCentral()
@@ -25,7 +27,6 @@ repositories {
 ext.snippetsDir = file("build/generated-snippets")
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
@@ -61,13 +62,14 @@ configurations {
 
 spotless {
 	java {
+		target 'src/*/java/**/*.java'
 		removeUnusedImports()
 		palantirJavaFormat()
 		formatAnnotations()
 	}
 }
 
-task processFrontendResources(type: Copy) {
+tasks.register('processFrontendResources', Copy) {
 	def frontendModulePath = project(":frontend").projectDir
 	println "Frontend module path: $frontendModulePath"
 	def frontendBuildDir = file("${frontendModulePath}/dist")

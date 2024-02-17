@@ -2,12 +2,15 @@ package io.github.martinwitt.logmanager;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import io.github.martinwitt.logmanager.domain.DockerLogs;
+import io.github.martinwitt.logmanager.domain.DockerService;
+import io.github.martinwitt.logmanager.usecase.GetDockerLogs;
+import io.github.martinwitt.logmanager.usecase.GetDockerServices;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import io.github.martinwitt.logmanager.domain.*;
-import io.github.martinwitt.logmanager.usecase.*;
-import org.springframework.hateoas.*;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
