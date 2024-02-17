@@ -1,0 +1,32 @@
+name: Code Quality Checks
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'releases/*'
+
+jobs:
+  run-spotless:
+    uses: martinwitt/unreusable-workflows/.github/workflows/spotless-gradle.yaml@master
+    with:
+      java-version: '21'
+      distribution: 'oracle'
+      working-dir: './'
+  qodana-scan:
+    permissions:
+      security-events: write
+    uses: martinwitt/unreusable-workflows/.github/workflows/qodana-scan.yaml@master
+  junit:
+    uses: martinwitt/unreusable-workflows/.github/workflows/gradle-tests.yaml@master
+    with:
+      java-version: '21'
+      distribution: 'oracle'
+      working-dir: './'
+  build:
+    uses: martinwitt/unreusable-workflows/.github/workflows/gradle-build.yaml@master
+    with:
+      java-version: '21'
+      distribution: 'oracle'
+      working-dir: './'

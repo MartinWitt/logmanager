@@ -1,5 +1,6 @@
 plugins {
     id("org.siouan.frontend-jdk17") version "8.0.0"
+    id("com.diffplug.spotless") version "6.24.0"
 }
 
 frontend {

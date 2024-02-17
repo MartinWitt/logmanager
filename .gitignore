@@ -60,3 +60,7 @@ node
 *.njsproj
 *.sln
 *.sw?
+/frontend/src/rest/.openapi-generator/
+/frontend/src/rest/.npmignore
+/frontend/src/rest/.openapi-generator-ignore
+/frontend/src/rest/git_push.sh

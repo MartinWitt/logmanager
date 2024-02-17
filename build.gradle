@@ -9,7 +9,10 @@ plugins {
 }
 
 group = 'io.github.martinwitt'
-version = '0.0.1-SNAPSHOT'
+
+// x-release-please-start-version
+version '0.0.1-SNAPSHOT'
+// x-release-please-end
 
 sourceCompatibility = 21
 
