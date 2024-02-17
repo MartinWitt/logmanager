@@ -69,5 +69,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       - name: push image
+        if: ${{ github.event_name != 'pull_request' }}
         run: |
-          docker push martinwitt/logmanager:latest
+          docker push ${{ steps.meta.outputs.tags }}
