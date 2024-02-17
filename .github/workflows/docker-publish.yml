@@ -43,7 +43,7 @@ jobs:
           java-version: '21'
       - name: Get version
         id: version
-        run: echo "VERSION=$(./gradlew -q printVersion)" >> $GITHUB_ENV
+        run: echo "VERSION=$(gradle -q printVersion)" >> $GITHUB_ENV
         # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
