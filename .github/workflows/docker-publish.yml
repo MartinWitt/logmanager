@@ -71,6 +71,9 @@ jobs:
       - name: debug
         run: docker image list
       - name: push image
-        if: ${{ github.event_name != 'pull_request' }}
         run: |
-          docker push ${{ steps.meta.outputs.tags }}
+          for tag in $(jq -r '.tags[]' <<< "$DOCKER_METADATA_OUTPUT_JSON"); do
+            echo "pushing $tag"
+            docker tag ghcr.io/src:image $tag
+            docker push $tag
+          done
