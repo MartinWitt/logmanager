@@ -81,6 +81,5 @@ jobs:
       - name: Push image
         run: |
             echo ${{ steps.meta.outputs.tags }} | tr "," "\n" | while read -r tag; do
-              docker tag logmanager:${{ steps.version.outputs.version }} $tag
-              docker push $tag
+              docker push logmanager:$(gradle -q printVersion)
             done
