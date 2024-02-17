@@ -79,7 +79,6 @@ jobs:
         run: |
           docker image list
       - name: Push image
-        if: ${{ github.event_name != 'pull_request' }}
         run: |
           echo ${{ steps.meta.outputs.tags }} | tr "," "\n" | while read -r tag; do
             docker tag logmanager:${{ env.VERSION}} $tag
