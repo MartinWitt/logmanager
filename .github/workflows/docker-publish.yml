@@ -79,4 +79,4 @@ jobs:
         run: |
           docker image list
       - name: Push image
-        run: docker push --all-tags ghcr.io/${{ github.repository }}
+        run: docker push --all-tags ghcr.io/martinwitt/logmanager
