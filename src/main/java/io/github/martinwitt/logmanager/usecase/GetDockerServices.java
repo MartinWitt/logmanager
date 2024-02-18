@@ -26,7 +26,10 @@ public class GetDockerServices {
     private final DockerClient dockerClient;
 
     public GetDockerServices() {
-        String localDockerHost = isWindows() ? "tcp://localhost:2375" : "unix:///var/run/docker.sock";
+        try {
+        log.info("Creating Docker client");
+        // String localDockerHost = isWindows() ? "tcp://localhost:2375" : "unix:///var/run/docker.sock";
+        String localDockerHost = "unix:///var/run/docker.sock";
         DockerHttpClient httpClient = new ZerodepDockerHttpClient.Builder()
                 .dockerHost(URI.create(localDockerHost))
                 .build();
@@ -36,9 +39,15 @@ public class GetDockerServices {
         dockerClient = DockerClientBuilder.getInstance(localDockerHostConfig)
                 .withDockerHttpClient(httpClient)
                 .build();
+        }
+        catch (Throwable e) {
+            log.error("Error while creating Docker client", e);
+            throw new RuntimeException(e);
+        }
     }
 
     public List<DockerService> getServices() {
+        log.info("Getting services");
         List<DockerService> services = new ArrayList<>();
         List<Container> exec = dockerClient.listContainersCmd().exec();
         log.info("exec: {}", exec);

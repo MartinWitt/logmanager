@@ -22,6 +22,7 @@ public class GetDockerLogs {
     private final DockerClient dockerClient;
 
     public GetDockerLogs() {
+        log.info("Creating Docker client");
         String localDockerHost = isWindows() ? "tcp://localhost:2375" : "unix:///var/run/docker.sock";
         DockerHttpClient httpClient = new ZerodepDockerHttpClient.Builder()
                 .dockerHost(URI.create(localDockerHost))
@@ -35,6 +36,7 @@ public class GetDockerLogs {
     }
 
     public DockerLogs getLogs(DockerService dockerService) {
+        log.info("Getting logs for service {}", dockerService.names());
         String id = dockerService.id();
         LogCollector callback = new LogCollector();
         try {
