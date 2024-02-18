@@ -91,3 +91,6 @@ tasks.register('printVersion') {
 		println version
 	}
 }
+tasks.named("bootBuildImage") {
+	environment["BP_JVM_VERSION"] = java.sourceCompatibility.toString()
+}
