@@ -79,9 +79,6 @@ jobs:
           docker image list
       - name: Push image
         run: |
-              for tag in $(jq -r '.tags[]' <<< "$DOCKER_METADATA_OUTPUT_JSON"); do
-                echo "pushing $tag"
-                docker tag logmanager ghcr.io/${{ github.repository }}:$tag
-                docker push $tag
-              done
-              docker image list
+                echo "pushing ${{ steps.meta.outputs.tags }}"
+                docker tag ${{ steps.meta.outputs.tags }} ghcr.io/martinwitt/logmanager
+                docker push -a ghcr.io/martinwitt/logmanager
