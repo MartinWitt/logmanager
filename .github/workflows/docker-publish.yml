@@ -79,7 +79,4 @@ jobs:
         run: |
           docker image list
       - name: Push image
-        run: |
-            echo ${{ steps.meta.outputs.tags }} | tr "," "\n" | while read -r tag; do
-              docker push logmanager:$(gradle -q printVersion)
-            done
+        run: docker push --all-tags ghcr.io/${{ github.repository }}
