@@ -41,7 +41,7 @@ jobs:
         with:
           distribution: 'oracle'
           java-version: '21'
-      # Install the cosign tool except on PR
+        # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
         if: github.event_name != 'pull_request'
@@ -57,8 +57,8 @@ jobs:
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@3d58c274f17dffee475a5520cbe67f0a882c4dbb
+        if: github.event_name != 'pull_request'
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -67,8 +67,13 @@ jobs:
         id: meta
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      - name: push image
-        if: ${{ github.event_name != 'pull_request' }}
+          images: ${{github.repository}}
+      - name: debug
         run: |
-          docker push ${{ steps.meta.outputs.tags }}
+          docker image list
+      - name: Push image
+        if: github.event_name != 'pull_request'
+        run: |
+                echo "pushing ${{ steps.meta.outputs.tags }}"
+                docker tag ${{ steps.meta.outputs.tags }} ghcr.io/martinwitt/logmanager
+                docker push -a ghcr.io/martinwitt/logmanager

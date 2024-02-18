@@ -86,3 +86,11 @@ tasks.register('processFrontendResources', Copy) {
 processResources {
 	dependsOn processFrontendResources
 }
+tasks.register('printVersion') {
+	doLast {
+		println version
+	}
+}
+tasks.named("bootBuildImage") {
+	environment["BP_JVM_VERSION"] = java.sourceCompatibility.toString()
+}
