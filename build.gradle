@@ -93,6 +93,7 @@ tasks.register('printVersion') {
 }
 tasks.named("bootBuildImage") {
 	environment["BP_JVM_VERSION"] = java.sourceCompatibility.toString()
+	environment[BP_NATIVE_IMAGE_BUILD_ARGUMENTS] = "-march=compatibility"
 	docker {
 		publishRegistry {
 			username = project.getProperty('USER_NAME')
