@@ -71,7 +71,7 @@ public class GetDockerServices {
         try {
             dockerClient.close();
         } catch (IOException e) {
-            logger.error("Error while closing docker client", e);
+            log.error("Error while closing docker client", e);
         }
     }
 
