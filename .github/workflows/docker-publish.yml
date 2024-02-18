@@ -58,6 +58,7 @@ jobs:
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
         uses: docker/login-action@3d58c274f17dffee475a5520cbe67f0a882c4dbb
+        if: github.event_name != 'pull_request'
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -71,6 +72,7 @@ jobs:
         run: |
           docker image list
       - name: Push image
+        if: github.event_name != 'pull_request'
         run: |
                 echo "pushing ${{ steps.meta.outputs.tags }}"
                 docker tag ${{ steps.meta.outputs.tags }} ghcr.io/martinwitt/logmanager
