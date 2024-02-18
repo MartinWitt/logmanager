@@ -11,11 +11,14 @@ import com.github.dockerjava.zerodep.ZerodepDockerHttpClient;
 import io.github.martinwitt.logmanager.domain.DockerLogs;
 import io.github.martinwitt.logmanager.domain.DockerService;
 import java.net.URI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GetDockerLogs {
 
+    private static final Logger log = LoggerFactory.getLogger(GetDockerLogs.class);
     private final DockerClient dockerClient;
 
     public GetDockerLogs() {
@@ -43,6 +46,7 @@ public class GetDockerLogs {
                     .exec(callback)
                     .awaitCompletion();
         } catch (InterruptedException e) {
+            log.error("Error while getting logs", e);
             throw new RuntimeException(e);
         }
         return new DockerLogs(callback.getLog());

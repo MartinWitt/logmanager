@@ -22,8 +22,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GetDockerServices {
 
-    private static final Logger logger = LoggerFactory.getLogger(GetDockerServices.class);
-
+    private static final Logger log = LoggerFactory.getLogger(GetDockerServices.class);
     private final DockerClient dockerClient;
 
     public GetDockerServices() {
@@ -42,6 +41,7 @@ public class GetDockerServices {
     public List<DockerService> getServices() {
         List<DockerService> services = new ArrayList<>();
         List<Container> exec = dockerClient.listContainersCmd().exec();
+        log.info("exec: {}", exec);
         for (Container container : exec) {
             String[] names = container.getNames();
             String image = container.getImage();
