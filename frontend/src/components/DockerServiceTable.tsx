@@ -30,7 +30,6 @@ export function DockerServiceTable(props: DockerServiceTableParams) {
             <TableCell>Status</TableCell>
             <TableCell>ID</TableCell>
             <TableCell>Created at</TableCell>
-            {/* add other columns as per your requirements */}
           </TableRow>
         </TableHead>
         <TableBody>

@@ -27,20 +27,18 @@ public class GetDockerServices {
 
     public GetDockerServices() {
         try {
-        log.info("Creating Docker client");
-        // String localDockerHost = isWindows() ? "tcp://localhost:2375" : "unix:///var/run/docker.sock";
-        String localDockerHost = "unix:///var/run/docker.sock";
-        DockerHttpClient httpClient = new ZerodepDockerHttpClient.Builder()
-                .dockerHost(URI.create(localDockerHost))
-                .build();
-        DockerClientConfig localDockerHostConfig = DefaultDockerClientConfig.createDefaultConfigBuilder()
-                .withDockerHost(localDockerHost)
-                .build();
-        dockerClient = DockerClientBuilder.getInstance(localDockerHostConfig)
-                .withDockerHttpClient(httpClient)
-                .build();
-        }
-        catch (Throwable e) {
+            log.info("Creating Docker client");
+            String localDockerHost = isWindows() ? "tcp://localhost:2375" : "unix:///var/run/docker.sock";
+            DockerHttpClient httpClient = new ZerodepDockerHttpClient.Builder()
+                    .dockerHost(URI.create(localDockerHost))
+                    .build();
+            DockerClientConfig localDockerHostConfig = DefaultDockerClientConfig.createDefaultConfigBuilder()
+                    .withDockerHost(localDockerHost)
+                    .build();
+            dockerClient = DockerClientBuilder.getInstance(localDockerHostConfig)
+                    .withDockerHttpClient(httpClient)
+                    .build();
+        } catch (Throwable e) {
             log.error("Error while creating Docker client", e);
             throw new RuntimeException(e);
         }
