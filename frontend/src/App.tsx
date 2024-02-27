@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
-import {Configuration, DockerServicesControllerApi, EntityModelDockerService} from "./rest";
+import {
+  Configuration,
+  DockerServicesControllerApi,
+  EntityModelDockerService,
+} from "./rest";
 import { DockerServiceTable } from "./components/DockerServiceTable.tsx";
 
-const dockerServicesApi = new DockerServicesControllerApi(new Configuration({
-  basePath: "http://localhost:8080/api",
-}));
-
+const dockerServicesApi = new DockerServicesControllerApi(
+  new Configuration({
+    basePath: "http://localhost:8080",
+  }),
+);
 
 function App() {
   const [servicesList, setServices] = useState<Array<EntityModelDockerService>>(

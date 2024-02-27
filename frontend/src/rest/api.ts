@@ -240,7 +240,7 @@ export const DockerServicesControllerApiAxiosParamCreator = function (
      * @throws {RequiredError}
      */
     all: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-      const localVarPath = `/services`;
+      const localVarPath = `/api/services`;
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
       let baseOptions;
@@ -282,7 +282,7 @@ export const DockerServicesControllerApiAxiosParamCreator = function (
     ): Promise<RequestArgs> => {
       // verify required parameter 'id' is not null or undefined
       assertParamExists("logs", "id", id);
-      const localVarPath = `/services/{id}/logs`.replace(
+      const localVarPath = `/api/services/{id}/logs`.replace(
         `{${"id"}}`,
         encodeURIComponent(String(id)),
       );
@@ -327,7 +327,7 @@ export const DockerServicesControllerApiAxiosParamCreator = function (
     ): Promise<RequestArgs> => {
       // verify required parameter 'id' is not null or undefined
       assertParamExists("one", "id", id);
-      const localVarPath = `/services/{id}`.replace(
+      const localVarPath = `/api/services/{id}`.replace(
         `{${"id"}}`,
         encodeURIComponent(String(id)),
       );
