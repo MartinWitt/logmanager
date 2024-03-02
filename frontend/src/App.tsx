@@ -8,7 +8,7 @@ import { DockerServiceTable } from "./components/DockerServiceTable.tsx";
 
 const dockerServicesApi = new DockerServicesControllerApi(
   new Configuration({
-    basePath: "127.0.0.1:8080",
+    basePath: "",
   }),
 );
 
