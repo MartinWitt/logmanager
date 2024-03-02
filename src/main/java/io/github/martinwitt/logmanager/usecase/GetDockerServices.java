@@ -45,27 +45,30 @@ public class GetDockerServices {
     }
 
     public List<DockerService> getServices() {
-        log.info("Getting services");
-        List<DockerService> services = new ArrayList<>();
-        List<Container> exec = dockerClient.listContainersCmd().exec();
-        log.info("exec: {}", exec);
-        for (Container container : exec) {
-            String[] names = container.getNames();
-            String image = container.getImage();
-            String status = container.getStatus();
-            String id = container.getId();
-            List<PortMapping> ports = Arrays.stream(container.getPorts())
-                    .map(port -> new PortMapping(
-                            port.getIp(),
-                            nullToMinusOne(port.getPrivatePort()),
-                            nullToMinusOne(port.getPublicPort()),
-                            port.getType()))
-                    .toList();
+        try {
+            List<DockerService> services = new ArrayList<>();
+            List<Container> exec = dockerClient.listContainersCmd().exec();
+            for (Container container : exec) {
+                String[] names = container.getNames();
+                String image = container.getImage();
+                String status = container.getStatus();
+                String id = container.getId();
+                List<PortMapping> ports = Arrays.stream(container.getPorts())
+                        .map(port -> new PortMapping(
+                                port.getIp(),
+                                nullToMinusOne(port.getPrivatePort()),
+                                nullToMinusOne(port.getPublicPort()),
+                                port.getType()))
+                        .toList();
 
-            Long createdAt = container.getCreated();
-            services.add(new DockerService(Arrays.asList(names), image, status, id, ports, createdAt));
+                Long createdAt = container.getCreated();
+                services.add(new DockerService(Arrays.asList(names), image, status, id, ports, createdAt));
+            }
+            return services;
+        } catch (Throwable e) {
+            log.error("Error while getting services", e);
+            return List.of();
         }
-        return services;
     }
 
     private boolean isWindows() {
