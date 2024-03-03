@@ -22,43 +22,53 @@ import org.springframework.stereotype.Service;
 @Service
 public class GetDockerServices {
 
-    private static final Logger logger = LoggerFactory.getLogger(GetDockerServices.class);
-
+    private static final Logger log = LoggerFactory.getLogger(GetDockerServices.class);
     private final DockerClient dockerClient;
 
     public GetDockerServices() {
-        String localDockerHost = isWindows() ? "tcp://localhost:2375" : "unix:///var/run/docker.sock";
-        DockerHttpClient httpClient = new ZerodepDockerHttpClient.Builder()
-                .dockerHost(URI.create(localDockerHost))
-                .build();
-        DockerClientConfig localDockerHostConfig = DefaultDockerClientConfig.createDefaultConfigBuilder()
-                .withDockerHost(localDockerHost)
-                .build();
-        dockerClient = DockerClientBuilder.getInstance(localDockerHostConfig)
-                .withDockerHttpClient(httpClient)
-                .build();
+        try {
+            log.info("Creating Docker client");
+            String localDockerHost = isWindows() ? "tcp://localhost:2375" : "unix:///var/run/docker.sock";
+            DockerHttpClient httpClient = new ZerodepDockerHttpClient.Builder()
+                    .dockerHost(URI.create(localDockerHost))
+                    .build();
+            DockerClientConfig localDockerHostConfig = DefaultDockerClientConfig.createDefaultConfigBuilder()
+                    .withDockerHost(localDockerHost)
+                    .build();
+            dockerClient = DockerClientBuilder.getInstance(localDockerHostConfig)
+                    .withDockerHttpClient(httpClient)
+                    .build();
+        } catch (Throwable e) {
+            log.error("Error while creating Docker client", e);
+            throw new RuntimeException(e);
+        }
     }
 
     public List<DockerService> getServices() {
-        List<DockerService> services = new ArrayList<>();
-        List<Container> exec = dockerClient.listContainersCmd().exec();
-        for (Container container : exec) {
-            String[] names = container.getNames();
-            String image = container.getImage();
-            String status = container.getStatus();
-            String id = container.getId();
-            List<PortMapping> ports = Arrays.stream(container.getPorts())
-                    .map(port -> new PortMapping(
-                            port.getIp(),
-                            nullToMinusOne(port.getPrivatePort()),
-                            nullToMinusOne(port.getPublicPort()),
-                            port.getType()))
-                    .toList();
+        try {
+            List<DockerService> services = new ArrayList<>();
+            List<Container> exec = dockerClient.listContainersCmd().exec();
+            for (Container container : exec) {
+                String[] names = container.getNames();
+                String image = container.getImage();
+                String status = container.getStatus();
+                String id = container.getId();
+                List<PortMapping> ports = Arrays.stream(container.getPorts())
+                        .map(port -> new PortMapping(
+                                port.getIp(),
+                                nullToMinusOne(port.getPrivatePort()),
+                                nullToMinusOne(port.getPublicPort()),
+                                port.getType()))
+                        .toList();
 
-            Long createdAt = container.getCreated();
-            services.add(new DockerService(Arrays.asList(names), image, status, id, ports, createdAt));
+                Long createdAt = container.getCreated();
+                services.add(new DockerService(Arrays.asList(names), image, status, id, ports, createdAt));
+            }
+            return services;
+        } catch (Throwable e) {
+            log.error("Error while getting services", e);
+            return List.of();
         }
-        return services;
     }
 
     private boolean isWindows() {
@@ -71,7 +81,7 @@ public class GetDockerServices {
         try {
             dockerClient.close();
         } catch (IOException e) {
-            logger.error("Error while closing docker client", e);
+            log.error("Error while closing docker client", e);
         }
     }
 

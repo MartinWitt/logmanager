@@ -2,7 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.0-SNAPSHOT'
 	id 'io.spring.dependency-management' version '1.1.4'
-	id 'org.graalvm.buildtools.native' version '0.9.28'
+	// id 'org.graalvm.buildtools.native' version '0.9.28'
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 	id 'com.diffplug.spotless' version '6.24.0'
 }
@@ -42,6 +42,7 @@ dependencies {
 	implementation 'com.github.docker-java:docker-java-transport-zerodep:3.3.4'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
 test {
@@ -93,4 +94,11 @@ tasks.register('printVersion') {
 }
 tasks.named("bootBuildImage") {
 	environment["BP_JVM_VERSION"] = java.sourceCompatibility.toString()
+	environment["BP_NATIVE_IMAGE_BUILD_ARGUMENTS"] = "-march=compatibility"
+	docker {
+		publishRegistry {
+			username = project.findProperty('USER_NAME') ?: "martinwitt"
+			password = project.findProperty('GITHUB_TOKEN') ?: "ghp_1234567890"
+		}
+	}
 }

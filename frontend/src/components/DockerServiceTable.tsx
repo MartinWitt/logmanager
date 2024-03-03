@@ -17,7 +17,7 @@ export function DockerServiceTable(props: DockerServiceTableParams) {
   const services = props.services;
   const navigate = useNavigate();
   const navigateToService = (service: EntityModelDockerService) => {
-    console.log("Navigating to service", service);
+    console.log("Navigating to service", "/services/" + service.id);
     navigate("/services/" + service.id);
   };
   return (
@@ -30,7 +30,6 @@ export function DockerServiceTable(props: DockerServiceTableParams) {
             <TableCell>Status</TableCell>
             <TableCell>ID</TableCell>
             <TableCell>Created at</TableCell>
-            {/* add other columns as per your requirements */}
           </TableRow>
         </TableHead>
         <TableBody>

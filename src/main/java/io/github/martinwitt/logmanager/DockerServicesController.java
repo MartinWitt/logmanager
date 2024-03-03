@@ -8,17 +8,25 @@ import io.github.martinwitt.logmanager.usecase.GetDockerLogs;
 import io.github.martinwitt.logmanager.usecase.GetDockerServices;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api")
 public class DockerServicesController {
 
+    private static final Logger log = LogManager.getLogger(DockerServicesController.class);
     private final GetDockerServices getDockerServices;
     private final GetDockerLogs getDockerLogs;
 
@@ -29,6 +37,7 @@ public class DockerServicesController {
 
     @GetMapping("/services")
     public CollectionModel<EntityModel<DockerService>> all() {
+        log.info("Getting all services");
         List<EntityModel<DockerService>> services = getDockerServices.getServices().stream()
                 .map(service -> {
                     Link selfLink = WebMvcLinkBuilder.linkTo(
@@ -70,4 +79,12 @@ public class DockerServicesController {
                 .withSelfRel();
         return EntityModel.of(logs, selfLink);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleAllExceptions(Exception ex) {
+        ApiError apiError = new ApiError(ex.getMessage());
+        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    record ApiError(String messages) {}
 }

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { DockerServicesControllerApi, EntityModelDockerService } from "./rest";
+import { EntityModelDockerService } from "./rest";
 import { DockerServiceTable } from "./components/DockerServiceTable.tsx";
-
-const dockerServicesApi = new DockerServicesControllerApi();
+import { dockerServicesApi } from "./client.tsx";
 
 function App() {
   const [servicesList, setServices] = useState<Array<EntityModelDockerService>>(
