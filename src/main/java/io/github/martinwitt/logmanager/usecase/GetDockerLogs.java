@@ -44,6 +44,7 @@ public class GetDockerLogs {
                     .logContainerCmd(id)
                     .withStdOut(true)
                     .withStdErr(true)
+                    .withTimestamps(true)
                     .withTailAll()
                     .exec(callback)
                     .awaitCompletion();

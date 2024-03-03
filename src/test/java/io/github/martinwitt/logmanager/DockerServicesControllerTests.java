@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @ExtendWith(MockitoExtension.class)
-public class DockerServicesControllerTest {
+public class DockerServicesControllerTests {
 
     @Mock
     private GetDockerServices getDockerServices;
@@ -47,6 +47,6 @@ public class DockerServicesControllerTest {
         when(getDockerServices.getServices()).thenReturn(List.of(mockService));
         when(getDockerLogs.getLogs(any(DockerService.class))).thenReturn(mockLogs);
 
-        mockMvc.perform(get("/services/" + id + "/logs")).andExpect(status().isOk());
+        mockMvc.perform(get("/api/services/" + id + "/logs")).andExpect(status().isOk());
     }
 }

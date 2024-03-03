@@ -126,7 +126,7 @@ function LogViewer() {
   const [flipLog, setFlipLog] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchType, setSearchType] = useState("fulltext");
-
+  console.log("serviceId", serviceId);
   if (!serviceId) {
     return (
       <Box alignContent={"flex-start"}>
