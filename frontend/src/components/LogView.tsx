@@ -28,11 +28,12 @@ function FlipButton(props: { onClick: () => void }) {
     <Button
       onClick={props.onClick}
       sx={{
-        backgroundColor: "white",
+        color: "#ffffff", // white text
+        backgroundColor: "#000000", // dark background
         marginBottom: "10px",
         alignSelf: "center",
         "&:hover": {
-          backgroundColor: "grey", // change this to desired hover color
+          backgroundColor: "#373737", // darker gray on hover
         },
       }}
     >
@@ -201,7 +202,12 @@ function LogViewer() {
         {entityModelDockerService.names?.join(", ")}
       </Typography>
       <ServiceInfoCard entityModelDockerService={entityModelDockerService} />
-      <Stack direction="row" justifyContent="center" alignItems="center">
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        minWidth={"40"}
+      >
         <SearchInput value={searchTerm} onChange={handleSearch} />
         <SearchKindSelection value={searchType} onChange={handleSearchType} />
         <FlipButton onClick={handleFlip} />
