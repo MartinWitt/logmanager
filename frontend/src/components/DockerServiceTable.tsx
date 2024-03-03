@@ -17,8 +17,8 @@ export function DockerServiceTable(props: DockerServiceTableParams) {
   const services = props.services;
   const navigate = useNavigate();
   const navigateToService = (service: EntityModelDockerService) => {
-    console.log("Navigating to service", service);
-    navigate(service!._links!.self!.href!);
+    console.log("Navigating to service", "/services/" + service.id);
+    navigate("/services/" + service.id);
   };
   return (
     <TableContainer>
