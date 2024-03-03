@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
+import "./index.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   BrowserRouter,
@@ -11,6 +12,14 @@ import LogView from "./components/LogView.tsx";
 import DefaultLayout from "./components/DefaultLayout.tsx";
 
 const theme = createTheme({
+  typography: {
+    fontFamily: "Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
+    allVariants: {
+      textRendering: "optimizeLegibility",
+      fontWeight: 400,
+      lineHeight: 1.5,
+    },
+  },
   palette: {
     primary: {
       main: "#3f51b5",
@@ -18,13 +27,16 @@ const theme = createTheme({
     secondary: {
       main: "#f50057",
     },
+    text: {
+      primary: "#ffffff",
+    },
   },
   components: {
     MuiTable: {
       styleOverrides: {
         root: {
           "& .MuiTableCell-root": {
-            color: "white", // Change this to desired typography color
+            color: "white",
           },
         },
       },
