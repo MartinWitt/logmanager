@@ -1,4 +1,5 @@
 import {
+  Configuration,
   DockerServicesControllerApi,
   EntityModelDockerLogs,
   EntityModelDockerService,
@@ -25,7 +26,11 @@ import { Error } from "@mui/icons-material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-const dockerServicesApi = new DockerServicesControllerApi();
+const dockerServicesApi = new DockerServicesControllerApi(
+    new Configuration({
+      basePath: "",
+    }),
+);
 
 function FlipButton(props: { onClick: () => void }) {
   return (
