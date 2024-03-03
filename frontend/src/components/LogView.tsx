@@ -1,9 +1,4 @@
-import {
-  Configuration,
-  DockerServicesControllerApi,
-  EntityModelDockerLogs,
-  EntityModelDockerService,
-} from "../rest";
+import { EntityModelDockerLogs, EntityModelDockerService } from "../rest";
 import { useEffect, useState } from "react";
 import {
   Typography,
@@ -26,11 +21,7 @@ import { Error } from "@mui/icons-material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-const dockerServicesApi = new DockerServicesControllerApi(
-    new Configuration({
-      basePath: "",
-    }),
-);
+import { dockerServicesApi } from "../client.tsx";
 
 function FlipButton(props: { onClick: () => void }) {
   return (
